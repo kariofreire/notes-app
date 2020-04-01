@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import Task from '../components/Task';
 import { useNavigation } from '@react-navigation/native';
-import SnackBar from 'react-native-snackbar-component'
+import SnackBar from 'react-native-snackbar-component';
 
 import api from '../services/api';
 
@@ -20,11 +20,11 @@ export default function Home() {
   }
 
   useEffect(() => {
-    loadTasks();
+    loadTasks()
   }, []);
 
   function navigateToAdd() {
-    navigation.navigate('Add');
+    navigation.navigate('Add', { refresh: loadTasks});
   }
 
   function showSnackbar(message) {
@@ -32,11 +32,19 @@ export default function Home() {
     setVisible(true);
   }
 
+  async function deleteTask(id) {
+    const response = await api.delete(`/tasks/${id}`);
+    showSnackbar(response.data.message);
+    setTasks(tasks.filter(task => task.id !== id));
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
         data={tasks}
-        renderItem={({ item }) => <Task task={item} showSnackbar={showSnackbar} />}
+        renderItem={({ item }) => (
+          <Task task={item} refresh={loadTasks} remove={deleteTask} showSnackbar={showSnackbar} />
+        )}
         keyExtractor={item => String(item.id)}
       />
 
