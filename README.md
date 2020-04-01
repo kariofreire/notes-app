@@ -5,7 +5,6 @@
 
 ### :rocket: Tecnologias Utilizadas
 - [Node Js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
 - [React Native](https://reactnative.dev/)
 - [Expo](https://expo.io/)
 
